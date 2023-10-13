@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="Calculator.css">
+    
+</head>
+<body>
+    <div class="container">
+        <section id="Display-area">
+            <div class="currentInput"></div>
+            <div class="answerScreen">0</div>
+        </section>
+        <section class="keypad-btns">
+            <button type="button" class="fun_btn" id="clear" value="">
+                C
+            </button>
+            <button type="button" class="fun_btn" id="erase" value="">
+                ⬅
+            </button>
+            <button type="button" class="fun_btn" value="/">/</button>
+            <button type="button" class="fun_btn" value="%">%</button>
+            <button type="button" class="num_btn" value="7">7</button>
+            <button type="button" class="num_btn" value="8">8</button>
+            <button type="button" class="num_btn" value="9">9</button>
+            <button type="button" class="fun_btn" value="*">x</button>
+            <button type="button" class="num_btn" value="4">4</button>
+            <button type="button" class="num_btn" value="5">5</button>
+            <button type="button" class="num_btn" value="6">6</button>
+            <button type="button" class="fun_btn" value="-">-</button>
+            <button type="button" class="num_btn" value="1">1</button>
+            <button type="button" class="num_btn" value="2">2</button>
+            <button type="button" class="num_btn" value="3">3</button>
+            <button type="button" class="fun_btn" value="+">+</button>
+            <button type="button" class="num_btn" value="00">00</button>
+            <button type="button" class="num_btn" value="0">0</button>
+            <button type="button" class="num_btn" value=".">.</button>
+            <button type="button" class="fun_btn" id="evaluate" value="">=</button>
+        </section>
+    </div>
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+
+<script>
+    let currentInput = document.querySelector('.currentInput');
+let answerScreen = document.querySelector('.answerScreen');
+let buttons = document.querySelectorAll('button');
+let erasebtn = document.querySelector('#erase');
+let clearbtn = document.querySelector('#clear');
+let evaluate = document.querySelector('#evaluate');
+let realTimeScreenValue = []
+
+clearbtn.addEventListener("click", () => {
+
+    realTimeScreenValue = [''];
+    answerScreen.innerHTML = 0;
+    currentInput.className = 'currentInput'
+    answerScreen.className = 'answerScreen';
+    answerScreen.style.color = " rgba(150, 150, 150, 0.87)";
+})
+
+buttons.forEach((btn) => {
+
+
+    btn.addEventListener("click", () => {
+        // when clicked button is not erased button 
+        if (!btn.id.match('erase')) {
+            // To display value on btn press
+            realTimeScreenValue.push(btn.value)
+            currentInput.innerHTML = realTimeScreenValue.join('');
+
+            // To evaluate answer in real time
+            if (btn.classList.contains('num_btn')) {
+                answerScreen.innerHTML = eval(realTimeScreenValue.join(''));
+            }
+        }
+
+        // When erase button is clicked
+        if (btn.id.match('erase')) {
+            realTimeScreenValue.pop();
+            currentInput.innerHTML = realTimeScreenValue.join('');
+            answerScreen.innerHTML = eval(realTimeScreenValue.join(''));
+        }
+
+        // When clicked button is evaluate button
+        if (btn.id.match('evaluate')) {
+            currentInput.className = 'answerScreen';
+            answerScreen.className = 'currentInput';
+            answerScreen.style.color = "white";
+        }
+
+        // To prevent undefined error in screen
+        if (typeof eval(realTimeScreenValue.join('')) == 'undefined') {
+            answerScreen.innerHTML = 0
+        }
+    })
+})
+</script>
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+</body></html>
